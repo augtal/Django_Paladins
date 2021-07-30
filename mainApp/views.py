@@ -1,7 +1,10 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, redirect
 
 # Create your views here.
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the mainApp index.")
+    text = "this is main index"
+    
+    return render(request, 'mainApp/index.html', {
+        'text': text
+    })
