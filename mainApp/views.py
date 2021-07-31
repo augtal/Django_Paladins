@@ -7,6 +7,8 @@ from pathlib import Path
 import os
 import dotenv
 
+from .services import saveChampions, saveChampionAbilities
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -19,9 +21,12 @@ if os.path.isfile(dotenv_file):
 
 def index(request):
     with PaladinsAPI(os.environ['DEV_ID'], os.environ['AUTH_KEY']) as paladins:
-        data = paladins.getChampionCards(2205)
+        # data = paladins.getChampions()
+        f = open('mainApp\APIResults\getChampions.JSON',)
+        data = json.load(f)
         
-        # champs = paladins.getGods()
+        # saveChampions(data)
+        # saveChampionAbilities(data)
         
         text = "this is main index"
         
