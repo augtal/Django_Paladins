@@ -10,14 +10,20 @@ from django.db.models.expressions import Case
 class Role(models.Model):
     name = models.CharField(max_length=12)
     
+    def __str__(self):
+        return self.name
+    
 class DamageType(models.Model):
     name = models.CharField(max_length=10)
+    
+    def __str__(self):
+        return self.name
 
 class Champion(models.Model):
     name = models.CharField(max_length=50)
     role = models.ForeignKey(Role, on_delete=CASCADE)
     description = models.CharField(max_length=200)
-    champion_image = models.URLField()
+    champion_image = models.URLField(null=True)
     
     def __str__(self):
         return self.name
@@ -28,7 +34,7 @@ class Ability(models.Model):
     description = models.CharField(max_length=50)
     summary = models.CharField(max_length=50)
     damageType = models.ForeignKey(DamageType, on_delete=CASCADE)
-    ability_image = models.URLField()
+    ability_image = models.URLField(null=True)
     
     def __str__(self):
         return self.name
@@ -38,7 +44,7 @@ class Talent(models.Model):
     name = models.CharField(max_length=20)
     type = models.CharField(max_length=20)
     description = models.CharField(max_length=20)
-    talent_image = models.URLField()
+    talent_image = models.URLField(null=True)
     
     def __str__(self):
         return self.name
@@ -49,9 +55,9 @@ class Card(models.Model):
     name = models.CharField(max_length=20)
     description = models.CharField(max_length=100)
     type = models.CharField(max_length=20)
-    base = models.IntegerField(default=0)
-    increase = models.IntegerField(default=0)
-    card_image = models.URLField()
+    base = models.DecimalField(max_digits=8, decimal_places=3)
+    increase = models.DecimalField(max_digits=8, decimal_places=3)
+    card_image = models.URLField(null=True)
     
     def __str__(self):
         return self.name
