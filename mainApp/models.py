@@ -1,5 +1,3 @@
-from os import name
-from typing import SupportsAbs
 from django.db import models
 from django.db.models import base
 from django.db.models.deletion import CASCADE
@@ -9,12 +7,14 @@ from django.db.models.expressions import Case
 
 class Role(models.Model):
     name = models.CharField(max_length=12)
+    long_name = models.CharField(max_length=21)
     
     def __str__(self):
         return self.name
     
 class DamageType(models.Model):
     name = models.CharField(max_length=10)
+    slug_name = models.CharField(max_length=10)
     
     def __str__(self):
         return self.name
