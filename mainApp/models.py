@@ -22,7 +22,7 @@ class DamageType(models.Model):
 class Champion(models.Model):
     name = models.CharField(max_length=50)
     role = models.ForeignKey(Role, on_delete=CASCADE)
-    description = models.CharField(max_length=200)
+    description = models.CharField(max_length=900)
     champion_image = models.URLField(null=True)
     
     def __str__(self):
@@ -30,9 +30,8 @@ class Champion(models.Model):
 
 class Ability(models.Model):
     championID = models.ForeignKey(Champion, on_delete=CASCADE)
-    name = models.CharField(max_length=20)
-    description = models.CharField(max_length=50)
-    summary = models.CharField(max_length=50)
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=600)
     damageType = models.ForeignKey(DamageType, on_delete=CASCADE)
     ability_image = models.URLField(null=True)
     
