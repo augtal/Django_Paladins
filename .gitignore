@@ -3,3 +3,5 @@
 db.sqlite3
 /websiteBase/__pycache__
 /mainApp/__pycache__
+PYREZ_LOG_FILE.log
+/mainApp/APIResults
