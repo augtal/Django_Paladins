@@ -24,6 +24,7 @@ class Champion(models.Model):
     role = models.ForeignKey(Role, on_delete=CASCADE)
     description = models.CharField(max_length=900)
     champion_image = models.URLField(null=True)
+    API_ID = models.IntegerField(default=0)
     
     def __str__(self):
         return self.name
@@ -40,9 +41,9 @@ class Ability(models.Model):
 
 class Talent(models.Model):
     championID = models.ForeignKey(Champion, on_delete=CASCADE)
-    name = models.CharField(max_length=20)
-    type = models.CharField(max_length=20)
-    description = models.CharField(max_length=20)
+    name = models.CharField(max_length=55)
+    type = models.CharField(max_length=75)
+    description = models.CharField(max_length=800)
     talent_image = models.URLField(null=True)
     
     def __str__(self):
@@ -50,12 +51,13 @@ class Talent(models.Model):
 
 class Card(models.Model):
     championID = models.ForeignKey(Champion, on_delete=CASCADE)
-    talent = models.CharField(max_length=50)
-    name = models.CharField(max_length=20)
-    description = models.CharField(max_length=100)
-    type = models.CharField(max_length=20)
-    base = models.DecimalField(max_digits=8, decimal_places=3)
-    increase = models.DecimalField(max_digits=8, decimal_places=3)
+    name = models.CharField(max_length=55)
+    description = models.CharField(max_length=800)
+    type = models.CharField(max_length=75)
+    base1 = models.DecimalField(max_digits=8, decimal_places=3)
+    base2 = models.DecimalField(max_digits=8, decimal_places=3)
+    increase1 = models.DecimalField(max_digits=8, decimal_places=3)
+    increase2 = models.DecimalField(max_digits=8, decimal_places=3)
     card_image = models.URLField(null=True)
     
     def __str__(self):
