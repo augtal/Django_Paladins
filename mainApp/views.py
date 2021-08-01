@@ -7,7 +7,7 @@ from pathlib import Path
 import os
 import dotenv
 
-from .services import saveChampions, saveChampionAbilities
+from .services import saveChampionCards, saveChampionTalents, saveChampions, saveChampionAbilities
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +21,36 @@ if os.path.isfile(dotenv_file):
 
 def index(request):
     with PaladinsAPI(os.environ['DEV_ID'], os.environ['AUTH_KEY']) as paladins:
-        # data = paladins.getChampions()
-        f = open('mainApp\APIResults\getChampions.JSON',)
-        data = json.load(f)
+        # data = paladins.getChampionCards(2205)
         
+        # Champion.objects.all().delete()
+        
+        # f = open('mainApp\APIResults\getChampions.JSON',)
         # saveChampions(data)
         # saveChampionAbilities(data)
+        
+        f = open('mainApp\APIResults\Error.JSON',)
+        data = json.load(f)
+        
+        saveChampionTalents(data)
+        saveChampionCards(data)
+        
+        #=================================================
+        
+        # f = open('mainApp\APIResults\ChampionIDsContinue.JSON',)
+        # championIDs = json.load(f)
+        
+        # data = 0
+        # try:
+        #     for champID in championIDs:
+        #         data = paladins.getChampionCards(champID['id'])
+                
+        #         saveChampionTalents(data)
+        #         saveChampionCards(data)
+        # except Exception as ex:
+        #     template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+        #     message = template.format(type(ex).__name__, ex.args)
+        #     z=0
         
         text = "this is main index"
         
