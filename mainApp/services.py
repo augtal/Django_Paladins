@@ -1,5 +1,23 @@
-from .models import Role, DamageType, Champion, Ability, Talent, Card
+import os
+from pathlib import Path
+import dotenv
+
+import json
 import re
+
+from pyrez.api import PaladinsAPI
+
+from .models import Role, DamageType, Champion, Ability, Talent, Card
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+dotenv_file = os.path.join(BASE_DIR, ".env")
+
+if os.path.isfile(dotenv_file):
+    dotenv.load_dotenv(dotenv_file)
+
+# =================================== Database ===================================
 
 def saveChampions(dataList):
     for data in dataList:        
@@ -64,12 +82,14 @@ def saveChampionCards(cardDataList):
             talentDescription = data['card_description']
             reg = re.split('\[(.+)\] ', talentDescription)
             
+            pattern = '\{scale=\s?([-+]?[0-9]+[.,]?[0-9]*)\|([-+]?[0-9]+[.,]?[0-9]*).?\}'
+            
             if len(reg) <= 1:
-                desReg = re.split('\{scale=\s?([-+]?[0-9]+[.,]?[0-9]*)\|([-+]?[0-9]+[.,]?[0-9]*).?\}', reg[0])
+                desReg = re.split(pattern, reg[0])
                 regType = 0
             # normal progression
             else:
-                desReg = re.split('\{scale=\s?([-+]?[0-9]+[.,]?[0-9]*)\|([-+]?[0-9]+[.,]?[0-9]*).?\}', reg[2])
+                desReg = re.split(pattern, reg[2])
                 regType = reg[len(reg)-2]
             
             
@@ -123,3 +143,51 @@ def saveChampionCards(cardDataList):
                 print("Row in Card table needs checking API_ID: " + str(championAPIID.API_ID) + " card name: " + data['card_name'] + " | check: type, base1, base2, increase1, increase2 | it should have 2 scales")
             
             card.save()
+
+def insertToDatabase():
+    with PaladinsAPI(os.environ['DEV_ID'], os.environ['AUTH_KEY']) as paladins:
+        
+        print(paladins.getDataUsed())
+        data = paladins.getChampionCards(2073)
+        z=0
+        
+        
+        return (data,"empty")
+        
+        #================= Champions and abilities ===================
+        
+        # f = open('mainApp\APIResults\getChampions.JSON',)
+        # data = json.load(f)
+        # saveChampions(data)
+        # saveChampionAbilities(data)
+        
+        #================= Error checking ===================
+        
+        # f = open('mainApp\APIResults\Error.JSON',)
+        # data = json.load(f)
+        
+        # saveChampionTalents(data)
+        # saveChampionCards(data)
+        
+        #=================================================
+        
+        #================= All cards/talents ===================
+        
+        # f = open('mainApp\APIResults\ChampionIDs.JSON',)
+        # championIDs = json.load(f)
+    
+        # try:
+        #     for champion in championIDs:
+        #         champID = champion['id']
+        #         data = paladins.getChampionCards(champID)
+                
+        #         saveChampionTalents(data)
+        #         saveChampionCards(data)
+        # except Exception as ex:
+        #     template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+        #     message = template.format(type(ex).__name__, ex.args)
+        #     return (data, message)
+        
+        #================= All cards/talents END ===================
+    
+# =================================== Database END ===================================
